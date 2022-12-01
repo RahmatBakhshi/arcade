@@ -1,0 +1,42 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    color : darkolivegreen
+
+}
+hr{
+    width: 600px;
+    height: 2px;
+}
+
+#board
+{
+    width: 400px;
+    height: 400px;
+margin: 0 auto;
+display: flex;
+flex-wrap: wrap;
+
+
+}
+.tile{
+    width: 130px;
+    height: 130px;
+    font-size: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.horizontal-line{
+    border-bottom: 2px solid black;
+
+}
+.vertical-line{
+    border-right: 2px solid black;
+}
+
+.won{
+background-color: lightblue;
+color: red;
+}
