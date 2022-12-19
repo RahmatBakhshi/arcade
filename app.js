@@ -45,36 +45,52 @@ document.getElementById("board").appendChild(tile);
 }
 function setTile(){
     if (gameOver){
-        return;
-        // set for the game to be over and wont be clickable
+      return;
+      // set for the game to be over and wont be clickable
     }
+
     let coord = this.id.split("-");
     let a = parseInt(coord[0]);
-    let b = parseInt( coord[1]);
-
+    let b = parseInt(coord[1]);
 
     if (board[a][b] != ' '){
-        return;
+      return;
     }
 
+    board[a][b] = currentPlayer;
+    this.innerText = currentPlayer;
 
-board [a][b] = currentPlayer;
-this.innerText = currentPlayer;
+    if(currentPlayer == playerO) {
+      currentPlayer = playerX;
+      //switches turns
+      makeComputerMove();
+    }
+    else {
+      currentPlayer = playerO;
+    }
 
+    checkWin();
+  }
 
-if(currentPlayer == playerO) {
-    currentPlayer = playerX;
-    //switches turns
-
-}
-else {
-    currentPlayer = playerO;
-
-}
-checkWin();
-
-
-}
+  function makeComputerMove() {
+    let emptyTiles = [];
+    for (let a = 0; a < 3; a++) {
+      for (let b = 0; b < 3; b++) {
+        if (board[a][b] == ' ') {
+          emptyTiles.push([a, b]);
+        }
+      }
+    }
+    if (emptyTiles.length == 0) {
+      return;
+    }
+    let randomTile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+    let a = randomTile[0];
+    let b = randomTile[1];
+    board[a][b] = currentPlayer;
+    let tile = document.getElementById(a.toString() + "-" + b.toString());
+    tile.innerText = currentPlayer;
+  }
 function checkWin(){
     // check to see if won first horizontally
     for (let a = 0; a < 3; a++ ){
@@ -130,7 +146,53 @@ if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '
 }
 }
 // page refreshes when u click restart
-document.getElementsByClassName("restartBtn").addEventListener('click', function(){
-    window.location.reload();
-    return false;
+
+function restartGame() {
+    // Reset the game board
+    board = [    [' ', ' ', ' ',],
+      [' ', ' ', ' ',],
+      [' ', ' ', ' ',]
+    ];
+
+    // Remove all the tiles from the board element
+    let boardElement = document.getElementById("board");
+    while (boardElement.firstChild) {
+      boardElement.removeChild(boardElement.firstChild);
+    }
+
+    // Set the current player back to playerO
+    currentPlayer = playerO;
+
+    // Set the gameOver flag to false
+    gameOver = false;
+
+    // Call setStart to create the new game board
+    setStart();
+  }
+
+  // Add an event listener to the restart button to call the restartGame function when the button is clicked
+  document.querySelector(".restartBtn").addEventListener("click", restartGame);
+
+
+  document.getElementById("set-name-button").addEventListener("click", function() {
+    playerO = document.getElementById("playerO-name").value;
   });
+
+function restartGame() {
+    // reset the board and other game state variables
+    board = [
+      [' ', ' ', ' '],
+      [' ', ' ', ' '],
+      [' ', ' ', ' ']
+    ];
+    currentPlayer = playerO;
+    gameOver = false;
+
+    // reset the display of the tiles
+    let tiles = document.querySelectorAll(".tile");
+    for (let i = 0; i < tiles.length; i++) {
+      tiles[i].innerText = "";
+      tiles[i].classList.remove("won");
+    }
+  }
+ oi
